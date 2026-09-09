@@ -11,16 +11,14 @@ from sunpy.coordinates import frames, get_earth, sun
 from sunpy.coordinates.screens import SphericalScreen
 from sunpy.coordinates.utils import (
     GreatArc,
+    _verify_coordinate_helioprojective,
+    coordinate_is_on_solar_disk,
     get_heliocentric_angle,
     get_limb_coordinates,
     get_rectangle_coordinates,
     solar_angle_equivalency,
     solar_angular_radius,
-    coordinate_is_on_solar_disk,
-    _verify_coordinate_helioprojective
 )
-
-from sunpy.coordinates.frames import HeliographicStonyhurst, Helioprojective
 from sunpy.sun import constants
 from sunpy.util.exceptions import SunpyUserWarning
 
@@ -437,22 +435,21 @@ def test_solar_angular_radius():
     np.testing.assert_almost_equal(sar.to(u.arcsec).value, 959.6, decimal=1)
 
 import numpy as np
-import astropy.units as u
-from astropy.coordinates import SkyCoord
+
 
 def test_coordinate_is_on_solar_disk():
     # 1. Test a coordinate directly on the disk (center of the Sun)
-    coord_on = SkyCoord(0*u.arcsec, 0*u.arcsec, 
+    coord_on = SkyCoord(0*u.arcsec, 0*u.arcsec,
                         frame='helioprojective', observer='earth', obstime='2020-01-01')
     assert coordinate_is_on_solar_disk(coord_on)
 
     # 2. Test a coordinate well off the disk (solar radius is ~960 arcsec)
-    coord_off = SkyCoord(1500*u.arcsec, 0*u.arcsec, 
+    coord_off = SkyCoord(1500*u.arcsec, 0*u.arcsec,
                          frame='helioprojective', observer='earth', obstime='2020-01-01')
     assert not coordinate_is_on_solar_disk(coord_off)
 
     # 3. Test an array of coordinates simultaneously
-    coords = SkyCoord([0, 1500]*u.arcsec, [0, 0]*u.arcsec, 
+    coords = SkyCoord([0, 1500]*u.arcsec, [0, 0]*u.arcsec,
                       frame='helioprojective', observer='earth', obstime='2020-01-01')
     result = coordinate_is_on_solar_disk(coords)
     assert np.array_equal(result, [True, False])
@@ -465,7 +462,7 @@ def test_verify_coordinate_helioprojective():
     # 1. Valid frame should pass silently without raising an error
     hpc = SkyCoord(0*u.arcsec, 0*u.arcsec, frame='helioprojective', observer='earth', obstime='2020-01-01')
     _verify_coordinate_helioprojective(hpc)
-    
+
     # 2. Invalid frame should raise the expected ValueError
     icrs = SkyCoord(1*u.deg, 2*u.deg, frame="icrs")
     with pytest.raises(ValueError, match="must be in the Helioprojective frame"):

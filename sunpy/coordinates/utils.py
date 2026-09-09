@@ -8,9 +8,8 @@ import astropy.units as u
 from astropy.coordinates import BaseCoordinateFrame, SkyCoord
 from astropy.coordinates.representation import CartesianRepresentation
 
-from sunpy.coordinates import sun
+from sunpy.coordinates import Heliocentric, HeliographicStonyhurst, get_body_heliographic_stonyhurst, sun
 from sunpy.coordinates.frames import Helioprojective
-from sunpy.coordinates import Heliocentric, HeliographicStonyhurst, get_body_heliographic_stonyhurst
 from sunpy.sun import constants
 
 __all__ = ['GreatArc', 'get_rectangle_coordinates', 'solar_angle_equivalency', 'get_limb_coordinates', 'get_heliocentric_angle','solar_angular_radius','coordinate_is_on_solar_disk']
@@ -602,4 +601,3 @@ def coordinate_is_on_solar_disk(coordinates):
     return np.arccos(
         np.cos(coordinates.Tx) * np.cos(coordinates.Ty)
     ) <= solar_angular_radius(coordinates)
-

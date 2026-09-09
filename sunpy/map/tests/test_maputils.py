@@ -1,4 +1,3 @@
-import re
 
 import numpy as np
 import pytest
@@ -8,7 +7,6 @@ from astropy.coordinates import BaseCoordinateFrame, SkyCoord
 from astropy.tests.helper import assert_quantity_allclose
 
 import sunpy.map
-from sunpy.coordinates import HeliographicStonyhurst
 from sunpy.coordinates.frames import HeliographicCarrington
 from sunpy.coordinates.utils import GreatArc
 from sunpy.map.maputils import (

@@ -15,9 +15,9 @@ for instrument details.
 import matplotlib.pyplot as plt
 
 import sunpy.map
+from sunpy.coordinates.utils import coordinate_is_on_solar_disk
 from sunpy.net import Fido
 from sunpy.net import attrs as a
-from sunpy.coordinates.utils import coordinate_is_on_solar_disk
 
 ###############################################################################
 # Searching for PHI-HRT Data
